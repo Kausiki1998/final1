@@ -34,7 +34,7 @@ spec:
 
       - name: sampleapp
 
-        image: docker pull kausikisamadder19.azurecr.io/webapplication14:latest
+        image: kausikisamadder19.azurecr.io/webapplication14:latest
 
         ports:
 
