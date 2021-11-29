@@ -1,0 +1,48 @@
+# Starter pipeline
+# Start with a minimal pipeline that you can customize to build and deploy your code.
+# Add steps that build, run tests, deploy, and more:
+# https://aka.ms/yaml
+
+trigger:
+- master
+resources:
+- repo: self
+
+pool:
+  vmImage: ubuntu-latest
+stages:
+- stage: Build
+  displayName: Build and push stage
+  jobs:
+  - job: Build
+    displayName: Build
+    pool:
+     vmImage: $(vmImageName) 
+     demands:
+     -task: CopyFiles@2
+     inputs:
+       SourceFolder:'$(system.DefaultWorkingDirectory)'
+       Contents:'**/*.yml'
+       TargetFolder:'$(Build.ArtifactStagingDirectory'
+
+       -task:PublishBuildArtifacts@1
+        
+      input
+         buildType:'current'
+         downloadType:'single'
+         artifactName:'artifact'
+         itemPattern:'**/*yml'
+         downloadPath:'$(System.ArtifactsDirectory)'
+
+        -task:KubernetesManifest@0
+        inputs
+          action:'deploy'
+          kubernetesServiceConnection:'aks'
+          namespace:'default'
+          manifests:'$(system.ArtifactsDirectory)/deploy.yml'
+          containers:'kausikisamadder19.azurecr.io/webapplication14:latest'
+
+         
+     
+    
+   
