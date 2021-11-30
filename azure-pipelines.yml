@@ -80,7 +80,7 @@ resources:
 
         action: 'deploy'
 
-        kubernetesServiceConnection: 'aksnew'
+        kubernetesServiceConnection: 'kubernetes1'
 
         namespace: 'default'
 
